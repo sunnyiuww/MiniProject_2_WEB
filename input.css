@@ -1,62 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+var textToType = "Information System Student";
+var typingSpeed = 90; 
+var deleteSpeed = 80; 
+var typingInterval = 10000;
 
-.btn {
-    @apply bg-color-secondary px-9 py-3 rounded-md capitalize font-bold hover:opacity-80 ease-in duration-200;
+function typeEffect(element, text, typingSpeed, deleteSpeed, interval) {
+    var i = 0;
+    var isDeleting = false;
+
+    var timer = setInterval(function() {
+        if (isDeleting) {
+            element.textContent = text.substring(0, i - 1);
+            i--;
+        } else {
+            element.textContent = text.substring(0, i + 1);
+            i++;
+        }
+
+        if (i === text.length + 1) {
+            isDeleting = true;
+        }
+
+        if (isDeleting && i === 0) {
+            isDeleting = false;
+        }
+
+        if (!isDeleting && i === text.length) {
+            setTimeout(function() {
+                clearInterval(timer);
+                typeEffect(element, textToType, typingSpeed, deleteSpeed, interval);
+            }, interval);
+        }
+    }, isDeleting ? deleteSpeed : typingSpeed);
 }
 
-.card_btn {
-    @apply w-full px-9 py-3 bg-color-primary-dark rounded-md capitalize font-bold hover:bg-color-secondary ease-in duration-200;
-}
+var typingTextElement = document.getElementById("typing-text-content");
+typeEffect(typingTextElement, textToType, typingSpeed, deleteSpeed, typingInterval);
 
-.title {
-    @apply text-3xl md:text-4xl font-bold leading-snug;
-}
+typingTextElement.style.color = "#9400FF";
 
-.blob1 {
-    @apply w-80 h-80 bg-color-blob absolute top-0 -left-5 -z-10 blur-2xl opacity-30 overflow-hidden rounded-full;
-}
 
-.blob2 {
-    @apply w-80 h-80 bg-color-secondary absolute bottom-10 right-0 -z-10 blur-2xl opacity-30 overflow-hidden rounded-full;
-}
+// Inisialisasi ScrollReveal
+const sr = ScrollReveal({
+    distance: '80px',
+    duration: 2000,
+    delay: 200,
+});
 
-.user-text {
-    display: none;
-}
+// Menerapkan efek reveal pada setiap elemen yang diinginkan
+sr.reveal('.blob1, .blob2', { origin: 'top' });
+sr.reveal('.container > div', { origin: 'bottom', interval: 200 });
+sr.reveal('.home-img, .educations-container, .certificates-box, .contact form', { origin: 'bottom', interval: 200 });
+sr.reveal('.home-contact h1, .about-img', { origin: 'left' });
+sr.reveal('.home-contact p, .about-content', { origin: 'right' });
+sr.reveal('.user-pic', { origin: 'bottom', interval: 200 });
 
-.user-text.active-text {
-    display: block;
-    animation: moveup 1s linear forwards;
-}
+// Menambahkan efek reveal pada elemen teks <h4> di bagian "About"
+sr.reveal('.container > div > h4, .container > h4.title', { origin: 'bottom', interval: 200 });
 
-.user-pic {
-    transition: all 0.2s ease;
-}
-
-.user-pic.active-pic {
-    border: 2px solid #9400FF;
-}
-
-@keyframes moveup {
-    0% {
-        margin-top: 40px;
-        opacity: 0;
-    }
-
-    50% {
-        margin-top: 20px;
-        opacity: 0.1;
-    }
-
-    100% {
-        margin-top: 0px;
-        opacity: 1;
-    }
-}
-
-.card {
-    perspective: 1000px;
-}
-
+// Menambahkan efek reveal pada bagian "Contact"
+sr.reveal('#contact .container > div, #contact form', { origin: 'bottom', interval: 200 });
